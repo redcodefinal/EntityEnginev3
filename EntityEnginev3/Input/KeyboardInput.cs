@@ -1,9 +1,9 @@
-﻿using EntityEnginev2.Engine;
+﻿using EntityEnginev3.Engine;
 using Microsoft.Xna.Framework.Input;
 
-namespace EntityEnginev2.Input
+namespace EntityEnginev3.Input
 {
-    public sealed class KeyboardInput : EntityEnginev2.Input.Input
+    public sealed class KeyboardInput : Input
     {
         private Keys _key;
 
@@ -21,8 +21,8 @@ namespace EntityEnginev2.Input
             }
         }
 
-        public KeyboardInput(Entity e, string name, Keys key)
-            : base(e, name)
+        public KeyboardInput(Entity parent, string name, Keys key)
+            : base(parent, name)
         {
             _key = key;
         }

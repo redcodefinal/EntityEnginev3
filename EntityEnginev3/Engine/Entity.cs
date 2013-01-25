@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using EntityEnginev3.Data;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace EntityEnginev3.Engine
@@ -10,21 +10,31 @@ namespace EntityEnginev3.Engine
     {
         public IComponent Parent { get; private set; }
 
-        public event Component.EventHandler DestroyEvent, ComponentAdded, ComponentRemoved;
+        public delegate void EventHandler(Entity e);
 
-        public string Name { get; private set; }
+        public event EventHandler DestroyEvent, CreateEvent;
+
+        public event Component.EventHandler ComponentAdded, ComponentRemoved;
+
+        public string Name { get; protected set; }
+
         public int Id { get; private set; }
+
         public bool Default { get; set; }
+
         public bool Active { get; set; }
+
         public bool Visible { get; set; }
 
         public Entity(IComponent parent, string name)
         {
             Parent = parent;
             Name = name;
+            Active = true;
+            Visible = true;
         }
 
-        public void Update()
+        public virtual void Update()
         {
             foreach (var component in ToArray())
             {
@@ -32,7 +42,7 @@ namespace EntityEnginev3.Engine
             }
         }
 
-        public void Draw(SpriteBatch sb)
+        public virtual void Draw(SpriteBatch sb)
         {
             foreach (var component in ToArray())
             {
@@ -40,15 +50,21 @@ namespace EntityEnginev3.Engine
             }
         }
 
-        public void Destroy(IComponent i = null)
+        public virtual void Destroy(IComponent i = null)
         {
             if (DestroyEvent != null)
-                DestroyEvent(i);
+                DestroyEvent(this);
 
             foreach (var component in ToArray())
             {
                 component.Destroy();
             }
+        }
+
+        public void AddEntity(Entity e)
+        {
+            if (CreateEvent != null)
+                CreateEvent(e);
         }
 
         public T GetComponent<T>(string name) where T : IComponent
@@ -68,7 +84,7 @@ namespace EntityEnginev3.Engine
             return (T)result;
         }
 
-        public void AddComponent(IComponent c)
+        public void AddComponent(Component c)
         {
             if (this.Any(component => c.Name == component.Name))
             {
@@ -83,11 +99,15 @@ namespace EntityEnginev3.Engine
                 ComponentAdded(c);
         }
 
-        public void RemoveComponent(IComponent c)
+        public void RemoveComponent(Component c)
         {
             Remove(c);
             if (ComponentRemoved != null)
                 ComponentRemoved(c);
+        }
+
+        public virtual void ParseXml(XmlParser xp, string path)
+        {
         }
     }
 }

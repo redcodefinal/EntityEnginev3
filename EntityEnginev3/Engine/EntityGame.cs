@@ -1,73 +1,84 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using EntityEnginev3.Data;
+using EntityEnginev3.Input;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace EntityEnginev3.Engine
 {
-    public class EntityGame : List<EntityState>
+    public class EntityGame
     {
         public bool Paused { get; protected set; }
-        public Game Game { get; private set; }
+
+        public static Game Game { get; private set; }
+
         public SpriteBatch SpriteBatch { get; private set; }
-        public GameTime GameTime { get; private set; }
+
+        public static GameTime GameTime { get; private set; }
 
         private Rectangle _viewport;
+
+        public EntityState CurrentState;
+
         public Rectangle Viewport
         {
             get { return _viewport; }
             set { _viewport = value; }
         }
 
-        public List<Service> Services; 
+        public List<Service> Services;
+        public  Color BackgroundColor = new Color(230,230,255);
 
-        public virtual void Update()
+        public EntityGame(Game game, GraphicsDeviceManager g, SpriteBatch spriteBatch, Rectangle viewport)
         {
-            foreach (var es in ToArray().Where(es => es.Active))
-            {
-                es.Update();
-            }
+            Game = game;
+            SpriteBatch = spriteBatch;
+            _viewport = viewport;
+            Services = new List<Service> { new InputHandler() };
+            Assets.LoadConent(game);
+
+            MakeWindow(g, viewport);
+        }
+
+        public virtual void Update(GameTime gt)
+        {
+            GameTime = gt;
+
+            CurrentState.Update();
 
             foreach (var service in Services)
             {
-                service.Update();
+                service.Update(GameTime);
             }
         }
 
         public virtual void Draw()
         {
-            foreach (var es in ToArray().Where(es => es.Visible))
-            {
-                es.Draw(SpriteBatch);
-            }
+            SpriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.PointClamp,
+                              DepthStencilState.Default, RasterizerState.CullNone);
+            Game.GraphicsDevice.Clear(BackgroundColor);
+
+            CurrentState.Draw(SpriteBatch);
 
             foreach (var service in Services)
             {
                 service.Draw(SpriteBatch);
             }
+            SpriteBatch.End();
         }
 
         public virtual void Exit()
         {
-            foreach (var es in ToArray())
-            {
-                es.Destroy();
-            }
+            CurrentState.Destroy();
+
             foreach (var service in Services)
             {
                 service.Destroy();
             }
         }
 
-        public T GetComponent<T>() where T : EntityState
-        {
-            var result = this.FirstOrDefault(c => c.GetType() == typeof(T));
-            if (result == null)
-                throw new Exception("Component of type " + typeof(T) + " does not exist in" + this + ".");
-            return (T)result;
-        }
         public static void MakeWindow(GraphicsDeviceManager g, Rectangle r)
         {
             if ((r.Width > GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width) ||

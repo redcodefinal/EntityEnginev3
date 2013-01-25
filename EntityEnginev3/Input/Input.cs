@@ -1,14 +1,15 @@
-﻿using EntityEnginev2.Data;
-using EntityEnginev2.Engine;
+﻿using EntityEnginev3.Data;
+using EntityEnginev3.Engine;
 
-namespace EntityEnginev2.Input
+namespace EntityEnginev3.Input
 {
     public class Input : Component
     {
         public int HoldTime;
         public double RapidfireMiliseconds;
 
-        public Input(Entity entity, string name) : base(entity, name)
+        public Input(Entity entity, string name)
+            : base(entity, name)
         {
         }
 
@@ -72,7 +73,7 @@ namespace EntityEnginev2.Input
             base.Update();
             if (HoldTime != 0)
             {
-                HoldTime += InputHandler.Gametime.ElapsedGameTime.Milliseconds;
+                HoldTime += InputHandler.GameTime.ElapsedGameTime.Milliseconds;
                 if (HoldTime > RapidfireMiliseconds)
                 {
                     HoldTime = 0;

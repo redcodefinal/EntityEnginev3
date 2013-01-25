@@ -1,18 +1,19 @@
-﻿using EntityEnginev2.Engine;
+﻿using EntityEnginev3.Engine;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
-namespace EntityEnginev2.Input
+namespace EntityEnginev3.Input
 {
     public sealed class DoubleInput : Input
     {
         public KeyboardInput Key;
         public GamePadInput Button;
 
-        public DoubleInput(Entity e, string name, Keys key, Buttons button, PlayerIndex pi) : base(e, name)
+        public DoubleInput(Entity parent, string name, Keys key, Buttons button, PlayerIndex pi)
+            : base(parent, name)
         {
-            Key = new KeyboardInput(e, name + "key", key);
-            Button = new GamePadInput(e, name + "gamepad", button, pi);
+            Key = new KeyboardInput(parent, name + "key", key);
+            Button = new GamePadInput(parent, name + "gamepad", button, pi);
         }
 
         public override bool Pressed()

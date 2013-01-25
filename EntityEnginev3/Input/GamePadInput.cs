@@ -1,16 +1,17 @@
-﻿using EntityEnginev2.Data;
-using EntityEnginev2.Engine;
+﻿using EntityEnginev3.Data;
+using EntityEnginev3.Engine;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
-namespace EntityEnginev2.Input
+namespace EntityEnginev3.Input
 {
     public sealed class GamePadInput : Input
     {
         private readonly PlayerIndex _pi;
         private Buttons _button;
 
-        public GamePadInput(Entity e, string name, Buttons button, PlayerIndex pi) : base(e, name)
+        public GamePadInput(Entity e, string name, Buttons button, PlayerIndex pi)
+            : base(e, name)
         {
             _button = button;
             _pi = pi;
@@ -67,13 +68,8 @@ namespace EntityEnginev2.Input
         public Sticks Stick;
         public float Threshold;
 
-        public GamePadAnalog(Entity entity, string name)
-            : base(entity, name)
-        {
-        }
-
-        public GamePadAnalog(Entity entity, string name, Sticks stick, PlayerIndex pi)
-            : base(entity, name)
+        public GamePadAnalog(Entity parent, string name, Sticks stick, PlayerIndex pi)
+            : base(parent, name)
         {
             Stick = stick;
             PlayerIndex = pi;
@@ -107,13 +103,14 @@ namespace EntityEnginev2.Input
             switch (Stick)
             {
                 case Sticks.Left:
-                    Position = new Vector2(InputHandler.GamePadStates[(int) PlayerIndex].ThumbSticks.Left.X,
+                    Position = new Vector2(InputHandler.GamePadStates[(int)PlayerIndex].ThumbSticks.Left.X,
                                            -InputHandler.GamePadStates[0].ThumbSticks.Left.Y);
                     break;
+
                 case Sticks.Right:
                     Position =
                         Position =
-                        new Vector2(InputHandler.GamePadStates[(int) PlayerIndex].ThumbSticks.Right.X,
+                        new Vector2(InputHandler.GamePadStates[(int)PlayerIndex].ThumbSticks.Right.X,
                                     -InputHandler.GamePadStates[0].ThumbSticks.Right.Y);
                     break;
             }
@@ -133,7 +130,7 @@ namespace EntityEnginev2.Input
                 Stick = Sticks.Right;
             }
 
-            PlayerIndex = (PlayerIndex) xp.GetInt(path + "->PlayerIndex", (int) PlayerIndex);
+            PlayerIndex = (PlayerIndex)xp.GetInt(path + "->PlayerIndex", (int)PlayerIndex);
         }
     }
 
@@ -148,11 +145,13 @@ namespace EntityEnginev2.Input
         public PlayerIndex PlayerIndex;
         public Triggers Trigger;
 
-        public GamePadTrigger(Entity entity, string name) : base(entity, name)
+        public GamePadTrigger(Entity entity, string name)
+            : base(entity, name)
         {
         }
 
-        public GamePadTrigger(Entity entity, string name, Triggers trigger, PlayerIndex pi) : base(entity, name)
+        public GamePadTrigger(Entity entity, string name, Triggers trigger, PlayerIndex pi)
+            : base(entity, name)
         {
             Trigger = trigger;
             PlayerIndex = pi;
@@ -166,10 +165,11 @@ namespace EntityEnginev2.Input
             switch (Trigger)
             {
                 case Triggers.Left:
-                    Value = InputHandler.GamePadStates[(int) PlayerIndex].Triggers.Left;
+                    Value = InputHandler.GamePadStates[(int)PlayerIndex].Triggers.Left;
                     break;
+
                 case Triggers.Right:
-                    Value = InputHandler.GamePadStates[(int) PlayerIndex].Triggers.Right;
+                    Value = InputHandler.GamePadStates[(int)PlayerIndex].Triggers.Right;
                     break;
             }
         }
@@ -188,7 +188,7 @@ namespace EntityEnginev2.Input
                 Trigger = Triggers.Right;
             }
 
-            PlayerIndex = (PlayerIndex) xp.GetInt(path + "->PlayerIndex", (int) PlayerIndex);
+            PlayerIndex = (PlayerIndex)xp.GetInt(path + "->PlayerIndex", (int)PlayerIndex);
         }
     }
 }

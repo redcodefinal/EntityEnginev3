@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using EntityEnginev3.Engine;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -11,6 +8,8 @@ namespace EntityEnginev3.Input
 {
     public class InputHandler : Service
     {
+        public static GameTime GameTime { get; private set; }
+
         #region Keyboard Field Region
 
         private static KeyboardState _keyboardState;
@@ -68,8 +67,10 @@ namespace EntityEnginev3.Input
 
         #region XNA methods
 
-        public void Update()
+        public override void Update(GameTime g)
         {
+            GameTime = g;
+
             _lastKeyboardState = _keyboardState;
             _keyboardState = Keyboard.GetState();
 
@@ -80,7 +81,6 @@ namespace EntityEnginev3.Input
 
         public override void Draw(SpriteBatch sb)
         {
-            throw new NotImplementedException();
         }
 
         public override void Destroy()
