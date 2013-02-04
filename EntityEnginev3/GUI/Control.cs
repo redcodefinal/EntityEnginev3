@@ -8,7 +8,7 @@ namespace EntityEnginev3.GUI
         public bool Visible;
         public bool HasFocus;
 
-        public Control(IComponent parent, string name) : base(parent, name)
+        public Control(EntityState stateref, IComponent parent, string name) : base(stateref, parent, name)
         {
         }
     }

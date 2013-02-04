@@ -13,8 +13,8 @@ namespace EntityEnginev3.GUI
         public Physics Physics;
         public TextRender TextRender;
 
-        public Text(EntityState es, string name)
-            : base(es, name)
+        public Text(EntityState stateref, IComponent parent, string name)
+            : base(stateref, parent, name)
         {
             Body = new Body(this, "Body");
             AddComponent(Body);
@@ -26,8 +26,8 @@ namespace EntityEnginev3.GUI
             AddComponent(TextRender);
         }
 
-        public Text(IComponent parent, string name, SpriteFont font, string text, Vector2 position)
-            : base(parent, name)
+        public Text(EntityState stateref, IComponent parent, string name, SpriteFont font, string text, Vector2 position)
+            : base(stateref,parent, name)
         {
             Body = new Body(this, "Body", position);
             AddComponent(Body);

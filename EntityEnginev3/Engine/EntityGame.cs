@@ -18,15 +18,9 @@ namespace EntityEnginev3.Engine
 
         public static GameTime GameTime { get; private set; }
 
-        private Rectangle _viewport;
-
         public EntityState CurrentState;
 
-        public Rectangle Viewport
-        {
-            get { return _viewport; }
-            set { _viewport = value; }
-        }
+        public static  Rectangle Viewport { get; set; }
 
         public List<Service> Services;
         public  Color BackgroundColor = new Color(230,230,255);
@@ -35,7 +29,7 @@ namespace EntityEnginev3.Engine
         {
             Game = game;
             SpriteBatch = spriteBatch;
-            _viewport = viewport;
+            Viewport = viewport;
             Services = new List<Service> { new InputHandler() };
             Assets.LoadConent(game);
 

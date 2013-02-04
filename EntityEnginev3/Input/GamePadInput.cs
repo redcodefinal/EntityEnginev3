@@ -144,6 +144,9 @@ namespace EntityEnginev3.Input
     {
         public PlayerIndex PlayerIndex;
         public Triggers Trigger;
+        public float Threshold = .7f;
+        public float Value { get; private set; }
+        private float _lastvalue;
 
         public GamePadTrigger(Entity entity, string name)
             : base(entity, name)
@@ -157,11 +160,31 @@ namespace EntityEnginev3.Input
             PlayerIndex = pi;
         }
 
-        public float Value { get; private set; }
+        public override bool Released()
+        {
+            return Up() && _lastvalue > Threshold;
+        }
+
+        public override bool Pressed()
+        {
+            return Down() && _lastvalue <= Threshold;
+        }
+
+        public override bool Down()
+        {
+            return Value > Threshold;
+        }
+
+        public override bool Up()
+        {
+            return Value <= Threshold;
+        }
+
 
         public override void Update()
         {
             base.Update();
+            _lastvalue = Value;
             switch (Trigger)
             {
                 case Triggers.Left:

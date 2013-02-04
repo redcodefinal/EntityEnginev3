@@ -35,7 +35,7 @@ namespace EntityEnginev3.Components
 
         protected virtual Particle GenerateNewParticle()
         {
-            var p = new Particle(0, Parent.GetComponent<Body>().Position / 2, 30, this) { Physics = { Velocity = Vector2.UnitY } };
+            var p = new Particle(Parent.StateRef, Parent.StateRef, 0, Parent.GetComponent<Body>().Position / 2, 30, this) { Physics = { Velocity = Vector2.UnitY } };
             return p;
         }
 

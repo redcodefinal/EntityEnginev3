@@ -16,8 +16,8 @@ namespace EntityEnginev3.Object
         public Body Body;
         public Physics Physics;
 
-        public Particle(int index, Vector2 position, int ttl, Emitter e)
-            : base(e.Parent.Parent, e.Name + ".Particle")
+        public Particle(EntityState stateref, IComponent parent, int index, Vector2 position, int ttl, Emitter e)
+            : base(stateref, parent, e.Name + ".Particle")
         {
             Name = Name + Id;
 
@@ -50,8 +50,8 @@ namespace EntityEnginev3.Object
     {
         public int FadeAge;
 
-        public FadeParticle(int index, Vector2 position, int fadeage, int ttl, Emitter e)
-            : base(index, position, ttl, e)
+        public FadeParticle(EntityState stateref, IComponent parent, int index, Vector2 position, int fadeage, int ttl, Emitter e)
+            : base(stateref, parent, index, position, ttl, e)
         {
             FadeAge = fadeage;
         }

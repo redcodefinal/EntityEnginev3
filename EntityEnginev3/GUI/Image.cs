@@ -12,8 +12,8 @@ namespace EntityEnginev3.GUI
         public Physics Physics;
         public ImageRender ImageBaseRender;
 
-        public Image(EntityState es, string name)
-            : base(es, name)
+        public Image(EntityState stateref, IComponent parent, string name)
+            : base(stateref, parent, name)
         {
             Body = new Body(this, "Body");
             AddComponent(Body);
@@ -25,8 +25,8 @@ namespace EntityEnginev3.GUI
             AddComponent(ImageBaseRender);
         }
 
-        public Image(IComponent parent, string name, Texture2D texture, Vector2 position)
-            : base(parent, name)
+        public Image(EntityState stateref, IComponent parent, string name, Texture2D texture, Vector2 position)
+            : base(stateref, parent, name)
         {
             Body = new Body(this, "Body", position);
             AddComponent(Body);

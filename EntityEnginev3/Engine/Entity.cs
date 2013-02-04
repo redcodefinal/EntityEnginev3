@@ -10,6 +10,8 @@ namespace EntityEnginev3.Engine
     {
         public IComponent Parent { get; private set; }
 
+        public EntityState StateRef { get; private set; }
+
         public delegate void EventHandler(Entity e);
 
         public event EventHandler DestroyEvent, CreateEvent;
@@ -26,9 +28,19 @@ namespace EntityEnginev3.Engine
 
         public bool Visible { get; set; }
 
-        public Entity(IComponent parent, string name)
+        public Entity(EntityState stateref, IComponent parent, string name)
         {
+            StateRef = stateref;
             Parent = parent;
+            Name = name;
+            Active = true;
+            Visible = true;
+        }
+
+        public Entity(EntityState stateref, string name)
+        {
+            StateRef = stateref;
+            Parent = stateref;
             Name = name;
             Active = true;
             Visible = true;

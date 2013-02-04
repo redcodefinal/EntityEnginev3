@@ -5,8 +5,8 @@ namespace EntityEnginev3.Input
 {
     public class Input : Component
     {
-        public int HoldTime;
-        public double RapidfireMiliseconds;
+        private int _holdtime;
+        private double _rapidfire;
 
         public Input(Entity entity, string name)
             : base(entity, name)
@@ -38,45 +38,38 @@ namespace EntityEnginev3.Input
         /// </summary>
         /// <param name="milliseconds">The milliseconds between firing.</param>
         /// <returns></returns>
-        public virtual bool RapidFire()
+        public virtual bool RapidFire(int milliseconds)
         {
+            _rapidfire = milliseconds;
             if (Pressed())
             {
-                if (HoldTime == 0)
+                if (_holdtime == 0)
                 {
-                    HoldTime = 1;
+                    _holdtime = 1;
                     return true;
                 }
             }
 
             else if (Down())
             {
-                if (HoldTime == 0 || HoldTime > RapidfireMiliseconds)
+                if (_holdtime == 0 || _holdtime > _rapidfire)
                 {
-                    HoldTime = 1;
+                    _holdtime = 1;
                     return true;
                 }
             }
-
-            //else if (Up())
-            //{
-            //    if (HoldTime != 0 && HoldTime > RapidfireMiliseconds)
-            //    {
-            //        HoldTime = 0;
-            //    }
-            //}
             return false;
         }
 
         public override void Update()
         {
             base.Update();
-            if (HoldTime != 0)
+            if (_holdtime != 0)
             {
-                HoldTime += InputHandler.GameTime.ElapsedGameTime.Milliseconds;
-                if (HoldTime > RapidfireMiliseconds)
+                _holdtime += InputHandler.GameTime.ElapsedGameTime.Milliseconds;
+                if (_holdtime > _rapidfire)
                 {
-                    HoldTime = 0;
+                    _holdtime = 0;
                 }
             }
         }
@@ -85,7 +78,7 @@ namespace EntityEnginev3.Input
         {
             base.ParseXml(xp, path);
             string rootnode = path + "->" + Name;
-            RapidfireMiliseconds = xp.GetFloat(rootnode + "->RapidfireMilliseconds", 0);
+            _rapidfire = xp.GetFloat(rootnode + "->RapidfireMilliseconds", 0);
         }
     }
 }
